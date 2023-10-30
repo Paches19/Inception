@@ -1,0 +1,56 @@
+version: '3'
+
+services:
+	nginx:
+		build: 
+		context: .
+		dockerfile: Dockerfile.nginx
+		volumes:
+		- wordpress_files:/var/www/html
+		ports:
+		- "443:443"
+		networks:
+		- mynetwork
+		restart: always
+
+	wordpress:
+		build:
+		context: .
+		dockerfile: Dockerfile-wordpress
+		environment:
+			- WP_DB_NAME=${WP_DB_NAME}
+			- WP_DB_USER=${WP_DB_USER}
+			- WP_DB_PASSWORD=${WP_DB_PASSWORD}
+			- WP_DB_HOST=${WP_DB_HOST}
+			- AUTH_KEY=${AUTH_KEY}
+			- SECURE_AUTH_KEY=${SECURE_AUTH_KEY}
+			- LOGGED_IN_KEY=${LOGGED_IN_KEY}
+			- NONCE_KEY=${NONCE_KEY}
+			- AUTH_SALT=${AUTH_SALT}
+			- SECURE_AUTH_SALT=${SECURE_AUTH_SALT}
+			- LOGGED_IN_SALT=${LOGGED_IN_SALT}
+			- NONCE_SALT=${NONCE_SALT}
+		volumes:
+			- wordpress-data:/var/www/html
+		networks:
+			- wp-network
+		restart: always
+
+	mariadb:
+		image: mariadb:latest
+		environment:
+		MYSQL_ROOT_PASSWORD: mi_root_password
+		MYSQL_DATABASE: ${WP_DB_NAME}
+		MYSQL_USER: ${WP_DB_USER}
+		MYSQL_PASSWORD: ${WP_DB_PASSWORD}
+		volumes:
+			- mariadb_data:/var/lib/mysql
+			- /home/login/data/mariadb_data:/var/lib/mysql
+			- ./init.sql:/docker-entrypoint-initdb.d/init.sql
+volumes:
+  mariadb_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/login/data/mariadb_data
