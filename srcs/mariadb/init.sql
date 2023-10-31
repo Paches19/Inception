@@ -1,11 +1,25 @@
 -- Crear la base de datos para WordPress
 CREATE DATABASE IF NOT EXISTS ${WP_DB_NAME} CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
--- Crear usuario de WordPress
-GRANT ALL ON ${WP_DB_NAME}.* TO '${WP_DB_USER}'@'%' IDENTIFIED BY '${WP_DB_PASSWORD}';
+-- Crear usuario administrador
+CREATE USER IF NOT EXISTS '${ROOT_DB_USER}'@'localhost' IDENTIFIED BY '${ROOT_DB_PASS}';
+ALTER USER '${ROOT_DB_USER}'@'localhost' IDENTIFIED BY '${ROOT_DB_PASS}';
+GRANT ALL ON *.* TO '${ROOT_DB_USER}'@'localhost' WITH GRANT OPTION;
 
--- Crear usuario administrador (reemplaza 'admin_username' y 'admin_password' con tus preferencias)
-GRANT ALL ON ${WP_DB_NAME}.* TO 'admin_username'@'%' IDENTIFIED BY 'admin_password';
+CREATE USER IF NOT EXISTS '${ROOT_DB_USER}'@'%' IDENTIFIED BY '${ROOT_DB_PASS}';
+SET PASSWORD FOR 'root'@'%' = PASSWORD('${MARIADB_ROOT_PASSWORD}');
+GRANT ALL ON *.* TO '${ROOT_DB_USER}'@'%' WITH GRANT OPTION;
+
+-- Crear usuario de WordPress
+CREATE USER IF NOT EXISTS '${WP_DB_USER}'@'localhost' IDENTIFIED BY '${WP_DB_PASSWORD}';
+SET PASSWORD FOR '${WP_DB_USER}'@'localhost' = PASSWORD('${MARIADB_ROOT_PASSWORD}');
+GRANT ALL ON ${WP_DB_NAME}.* TO '${WP_DB_USER}'@'localhost';
+
+CREATE USER IF NOT EXISTS '${WP_DB_USER}'@'%' IDENTIFIED BY '${WP_DB_PASSWORD}';
+SET PASSWORD FOR '${WP_DB_USER}'@'%' = PASSWORD('${MARIADB_ROOT_PASSWORD}');
+
+CREATE DATABASE IF NOT EXISTS ${WP_DB_NAME};
+GRANT ALL ON ${WP_DB_NAME}.* TO '${WP_DB_USER}'@'%';
 
 -- Aplicar privilegios
 FLUSH PRIVILEGES;
