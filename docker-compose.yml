@@ -1,7 +1,6 @@
 version: '3'
 
 volumes:
-    - ./srcs/mariadb/init.sql:/docker-entrypoint-initdb.d/init.sql
     wordpress:
        driver: local
        driver_opts:
