@@ -1,11 +1,32 @@
 version: '3'
 
+volumes:
+    wordpress_files:
+       driver: local
+       driver_opts:
+         type: none
+         o: bind
+         device: /home/adpachec/data/wordpress
+
+    mariadb_data:
+       driver: local
+       driver_opts:
+         type: none
+         o: bind
+         device: /home/adpachec/data/mariadb
+
+networks:
+  inception:
+    driver: bridge
+
 services:
     nginx:
        container_name: nginx
        build: ./srcs/nginx
+       depends_on:
+         - wordpress
        volumes:
-         - wordpress_files:/var/www/html
+         - wordpress:/var/www/html
        ports:
          - "443:443"
        networks:
@@ -15,6 +36,8 @@ services:
     wordpress:
        container_name: wordpress
        build: ./srcs/wordpress
+       depends_on:
+         - mariadb
        environment:
          WP_DB_NAME: ${WP_DB_NAME}
          WP_DB_USER: ${WP_DB_USER}
@@ -35,9 +58,10 @@ services:
        restart: always
 
     mariadb:
+    container_name: mariadb
        build: ./srcs/mariadb
        environment:
-         MYSQL_ROOT_PASSWORD: ${ROOT_PASSWORD}
+         MYSQL_ROOT_PASSWORD: ${ROOT_DB_PASS}
          MYSQL_DATABASE: ${WP_DB_NAME}
          MYSQL_USER: ${WP_DB_USER}
          MYSQL_PASSWORD: ${WP_DB_PASSWORD}
@@ -47,22 +71,3 @@ services:
        networks:
          - inception
        restart: always
-
-networks:
-  inception:
-    driver: bridge
-
-volumes:
-    wordpress_files:
-       driver: local
-       driver_opts:
-         type: none
-         o: bind
-         device: /home/adpachec/data/wordpress
-
-    mariadb_data:
-       driver: local
-       driver_opts:
-         type: none
-         o: bind
-         device: /home/adpachec/data/mariadb
