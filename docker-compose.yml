@@ -1,14 +1,14 @@
 version: '3'
 
 volumes:
-    wordpress_files:
+    wordpress:
        driver: local
        driver_opts:
          type: none
          o: bind
          device: /home/adpachec/data/wordpress
 
-    mariadb_data:
+    mariadb:
        driver: local
        driver_opts:
          type: none
