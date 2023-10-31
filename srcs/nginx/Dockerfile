@@ -8,7 +8,7 @@ RUN apt-get update && apt-get install -y nginx openssl
 COPY ./conf/nginx.conf /etc/nginx/nginx.conf
 COPY ssl/ /etc/ssl/
 # Copia el script de entrada al contenedor
-COPY ./srcs/requirements/entrypoint.sh /entrypoint.sh
+COPY ../requirements/entrypoint.sh /entrypoint.sh
 
 # Abrir el puerto 443 para HTTPS para establecer la conexion
 EXPOSE 443
