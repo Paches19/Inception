@@ -1,5 +1,7 @@
 <?php
 define('DB_NAME', getenv('WP_DB_NAME') ?: 'wordpress');
+define('DB_ROOT', getenv('ROOT_DB_USER') ?: 'wordpress');
+define('DB_ROOT_PASSWORD', getenv('ROOT_DB_PASS') ?: 'password');
 define('DB_USER', getenv('WP_DB_USER') ?: 'wordpress');
 define('DB_PASSWORD', getenv('WP_DB_PASSWORD') ?: 'password');
 define('DB_HOST', getenv('WP_DB_HOST') ?: 'database');
