@@ -6,7 +6,7 @@
 #    By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/31 13:09:36 by adpachec          #+#    #+#              #
-#    Updated: 2023/11/06 12:52:25 by adpachec         ###   ########.fr        #
+#    Updated: 2023/11/06 13:08:30 by adpachec         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,18 +17,18 @@ all: run
 # Construir todos los contenedores
 build:
 	@sudo mkdir -p /home/adpachec/data/wordpress
-	@sudo mkdir -p /home/adpachec/data/mysql
+	@sudo mkdir -p /home/adpachec/data/mariadb
 	docker-compose -f $(COMPOSE_FILE) build --no-cache
 
 run: 
 	@sudo mkdir -p /home/adpachec/data/wordpress
-	@sudo mkdir -p /home/adpachec/data/mysql
+	@sudo mkdir -p /home/adpachec/data/mariadb
 	docker-compose -f $(COMPOSE_FILE) up --build
 	
 # Iniciar todos los contenedores en segundo plano
 up:
 	@sudo mkdir -p /home/adpachec/data/wordpress
-	@sudo mkdir -p /home/adpachec/data/mysql
+	@sudo mkdir -p /home/adpachec/data/mariadb
 	docker-compose -f $(COMPOSE_FILE) up -d --build
 
 # Detener y eliminar todos los contenedores, redes y volúmenes
@@ -61,6 +61,6 @@ clean:
 	docker volume rm mariadb wordpress
 	docker system prune -p
 	@sudo rm -rf /home/adpachec/data/wordpress
-	@sudo rm -rf /home/adpachec/data/mysql
+	@sudo rm -rf /home/adpachec/data/mariadb
 
 .PHONY: all up down build start destroy stop restart clean ps logs
