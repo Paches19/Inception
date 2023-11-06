@@ -1,4 +1,4 @@
-version: '3'
+version: '3.5'
 
 volumes:
     wordpress:
@@ -22,7 +22,7 @@ networks:
 services:
     nginx:
        container_name: nginx
-       build: ./srcs/nginx
+       build: ./requirements/nginx
        depends_on:
          - wordpress
        volumes:
@@ -35,22 +35,15 @@ services:
 
     wordpress:
        container_name: wordpress
-       build: ./srcs/wordpress
+       build: ./requirements/wordpress
        depends_on:
          - mariadb
        environment:
+         MYSQL_HOST: ${WP_HOST_NAME}
          WP_DB_NAME: ${WP_DB_NAME}
          WP_DB_USER: ${WP_DB_USER}
          WP_DB_PASSWORD: ${WP_DB_PASSWORD}
          WP_DB_HOST: ${WP_DB_HOST}
-         AUTH_KEY: ${AUTH_KEY}
-         SECURE_AUTH_KEY: ${SECURE_AUTH_KEY}
-         LOGGED_IN_KEY: ${LOGGED_IN_KEY}
-         NONCE_KEY: ${NONCE_KEY}
-         AUTH_SALT: ${AUTH_SALT}
-         SECURE_AUTH_SALT: ${SECURE_AUTH_SALT}
-         LOGGED_IN_SALT: ${LOGGED_IN_SALT}
-         NONCE_SALT: ${NONCE_SALT}
        volumes:
          - wordpress:/var/www/html
        networks:
@@ -59,15 +52,14 @@ services:
 
     mariadb:
        container_name: mariadb
-       build: ./srcs/mariadb
+       build: ./requirements/mariadb
        environment:
          MYSQL_ROOT_PASSWORD: ${ROOT_DB_PASS}
-         MYSQL_DATABASE: ${WP_DB_NAME}
-         MYSQL_USER: ${WP_DB_USER}
-         MYSQL_PASSWORD: ${WP_DB_PASSWORD}
+         WP_DB_NAME: ${WP_DB_NAME}
+         WP_DB_USER: ${WP_DB_USER}
+         WP_DB_PASSWORD: ${WP_DB_PASSWORD}
        volumes:
          - mariadb:/var/lib/mysql
-         - ./srcs/mariadb/init.sql:/docker-entrypoint-initdb.d/init.sql
        networks:
          - inception
        restart: always

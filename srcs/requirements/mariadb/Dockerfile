@@ -1,12 +1,18 @@
-# Usar Debian Buster como imagen base
+# Use Debian Buster as base image
 FROM debian:buster
 
-# Instalar MariaDB
+# Installl MariaDB
 RUN apt-get update && apt-get install -y mariadb-server && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
+    apt-get clean && rm -rf /var/lib/apt/lists/* \
+    # purge and re-create /var/lib/mysql with appropriate ownership
+    && mkdir -p /var/run/mysqld \
+    && chown -R mysql:mysql /var/run/mysqld \
+    # ensure that /var/run/mysqld (used for socket and lock files) is writable regardless of the UID our mysqld instance ends up having at runtime
+    && chmod 777 /var/run/mysqld
 
-# Exponer el puerto de MariaDB
+# Expose MariaDB port
 EXPOSE 3306
 
-# Establecer el script de inicio
-CMD ["mysqld"]
+# Copy and launch the init script
+COPY tools/configure.sh /tmp/configure.sh
+ENTRYPOINT ["sh", "/tmp/configure.sh"]
