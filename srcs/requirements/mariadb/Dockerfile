@@ -14,5 +14,5 @@ RUN apt-get update && apt-get install -y mariadb-server && \
 EXPOSE 3306
 
 # Copy and launch the init script
-COPY tools/configure.sh /tmp/configure.sh
-ENTRYPOINT ["sh", "/tmp/configure.sh"]
+COPY tools/init_db.sh /tmp/init_db.sh
+ENTRYPOINT ["sh", "/tmp/init_db.sh"]
