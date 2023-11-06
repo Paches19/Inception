@@ -2,7 +2,7 @@
 FROM debian:buster
 
 # Installl MariaDB
-RUN sudo apt-get update && apt-get install -y mariadb-server && \
+RUN apt-get update && apt-get install -y mariadb-server && \
     apt-get clean && rm -rf /var/lib/apt/lists/* \
     # purge and re-create /var/lib/mysql with appropriate ownership
     && mkdir -p /var/run/mysqld \
