@@ -1,45 +1,34 @@
 #!/bin/sh
 
-if [ ! -d "/run/mysqld" ]; then
-	mkdir -p /run/mysqld
-	chown -R mysql:mysql /run/mysqld
+mysql_install_db
+
+if [-d "/var/lib/mysql/wp-content"]
+then
+	echo "Database already exits"
+else
+
+/etc/init.d/mysql start
+
+mysql_secure_installation << _EOF_
+ 
+Y
+\`${MYSQL_ROOT_PASSWORD}\`
+\`${MYSQL_ROOT_PASSWORD}\`
+Y
+n
+Y
+Y
+_EOF_
+
+sleep 3
+
+	mysql -e "CREATE DATABASE IF NOT EXISTS \`${MYSQL_DATABASE}\`;"
+	mysql -e "CREATE USER IF NOT EXISTS \`${MYSQL_USER}\`@'localhost' IDENTIFIED BY '${MYSQL_PASSWORD}';"
+	mysql -e "GRANT ALL PRIVILEGES ON \`${MYSQL_DATABASE}\`.* TO \`${MYSQL_USER}\`@'%' IDENTIFIED BY '${MYSQL_PASSWORD}';"
+	mysql -e "FLUSH PRIVILEGES;"
+
+/etc/init.d/mysql stop
+
 fi
 
-if [ ! -d "/var/lib/mysql/mysql" ]; then
-	
-	chown -R mysql:mysql /var/lib/mysql
-
-	# init database
-	mysql_install_db --basedir=/usr --datadir=/var/lib/mysql --user=mysql --rpm > /dev/null
-
-	tfile=`mktemp`
-	if [ ! -f "$tfile" ]; then
-		return 1
-	fi
-
-	# https://stackoverflow.com/questions/10299148/mysql-error-1045-28000-access-denied-for-user-billlocalhost-using-passw
-	cat << EOF > $tfile
-USE mysql;
-FLUSH PRIVILEGES;
-
-DELETE FROM	mysql.user WHERE User='';
-DROP DATABASE test;
-DELETE FROM mysql.db WHERE Db='test';
-DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');
-
-ALTER USER 'root'@'localhost' IDENTIFIED BY '$ROOT_DB_PASS';
-
-CREATE DATABASE $WP_DB_NAME CHARACTER SET utf8 COLLATE utf8_general_ci;
-CREATE USER '$WP_DB_USER'@'%' IDENTIFIED by '$WP_DB_PASSWORD';
-GRANT ALL PRIVILEGES ON $WP_DB_NAME.* TO '$WP_DB_USER'@'%';
-
-FLUSH PRIVILEGES;
-EOF
-	/usr/bin/mysqld --user=mysql --bootstrap < $tfile
-	# rm -f $tfile
-fi
-
-sed -i "s|skip-networking|# skip-networking|g" /etc/mysql/conf.d/mysql.cnf
-sed -i "s|.*bind-address\s*=.*|bind-address=0.0.0.0|g" /etc/mysql/conf.d/mysql.cnf
-
-exec /usr/bin/mysqld --user=mysql --console
+exec "$@"
