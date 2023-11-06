@@ -33,7 +33,7 @@ COPY ./tools/init_wp.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/init_wp.sh
 ENTRYPOINT ["/usr/local/bin/init_wp.sh"]
 
-WORKDIR /var/www/html
+WORKDIR /var/www/html/
 
 # Exponer puerto 9000 para PHP-FPM
 EXPOSE 9000
