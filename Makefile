@@ -6,13 +6,13 @@
 #    By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/31 13:09:36 by adpachec          #+#    #+#              #
-#    Updated: 2023/11/06 12:36:51 by adpachec         ###   ########.fr        #
+#    Updated: 2023/11/06 12:42:44 by adpachec         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 DOCKER_FILE = ./srcs/docker-compose.yml
 
-all: up
+all: run
 
 # Construir todos los contenedores
 build:
@@ -20,11 +20,16 @@ build:
 		@sudo mkdir -p /home/adpachec/data/mysql
 		docker-compose -f $(DOCKER_FILE) build --no-cache
 
+run: 
+		@sudo mkdir -p /home/adpachec/data/wordpress
+		@sudo mkdir -p /home/adpachec/data/mysql
+		docker-compose -f $(COMPOSE_FILE) up --build
+	
 # Iniciar todos los contenedores en segundo plano
 up:
 		@sudo mkdir -p /home/adpachec/data/wordpress
 		@sudo mkdir -p /home/adpachec/data/mysql
-		docker-compose -f $(DOCKER_FILE) up -d
+		docker-compose -f $(DOCKER_FILE) up -d --build
 
 # Detener y eliminar todos los contenedores, redes y volúmenes
 down:
