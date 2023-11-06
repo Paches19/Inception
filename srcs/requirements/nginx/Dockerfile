@@ -7,10 +7,13 @@ RUN apt-get update && apt-get install -y \
     openssl \
     && rm -rf /var/lib/apt/lists/*
 
+# Crear carpeta para certificados SSL
+RUN mkdir -p /etc/nginx/ssl/
+
 # Generar y copiar certificados SSL
 RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
     -out /etc/nginx/ssl/adpachec.42.fr.pem \
-    -keyout /etc/nginx/ssl/acpachec.42.fr.key \
+    -keyout /etc/nginx/ssl/adpachec.42.fr.key \
     -subj "/C=ES/ST=Madrid/L=Madrid/O=42/CN=adpachec.42.fr"
 
 # Copiar la configuración personalizada de NGINX
