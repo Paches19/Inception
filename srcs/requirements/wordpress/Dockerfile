@@ -22,8 +22,8 @@ RUN apt-get update && apt-get install -y \
 COPY ./conf/www.conf /var/www/html/
 
 # Configurar php-fpm
-# RUN echo "cgi.fix_pathinfo=0" >> /etc/php/7.3/fpm/php.ini && \
-# 	sed -i 's/;daemonize = yes/daemonize = no/' /etc/php/7.3/fpm/php-fpm.conf
+RUN echo "cgi.fix_pathinfo=0" >> /etc/php/7.3/fpm/php.ini && \
+	sed -i 's/;daemonize = yes/daemonize = no/' /etc/php/7.3/fpm/php-fpm.conf
 
 #Create the folder to enable php start
 RUN mkdir /run/php
