@@ -39,11 +39,11 @@ services:
        depends_on:
          - mariadb
        environment:
-         MYSQL_HOST: ${WP_HOST_NAME}
-         WP_DB_NAME: ${WP_DB_NAME}
-         WP_DB_USER: ${WP_DB_USER}
-         WP_DB_PASSWORD: ${WP_DB_PASSWORD}
-         WP_DB_HOST: ${WP_DB_HOST}
+         - MYSQL_HOST: ${WP_HOST_NAME}
+         - WP_DB_NAME: ${WP_DB_NAME}
+         - WP_DB_USER: ${WP_DB_USER}
+         - WP_DB_PASSWORD: ${WP_DB_PASSWORD}
+         - WP_DB_HOST: ${WP_DB_HOST}
        volumes:
          - wordpress:/var/www/html
        networks:
@@ -54,10 +54,10 @@ services:
        container_name: mariadb
        build: ./requirements/mariadb
        environment:
-         MYSQL_ROOT_PASSWORD: ${ROOT_DB_PASS}
-         WP_DB_NAME: ${WP_DB_NAME}
-         WP_DB_USER: ${WP_DB_USER}
-         WP_DB_PASSWORD: ${WP_DB_PASSWORD}
+         - MYSQL_ROOT_PASSWORD: ${ROOT_DB_PASS}
+         - WP_DB_NAME: ${WP_DB_NAME}
+         - WP_DB_USER: ${WP_DB_USER}
+         - WP_DB_PASSWORD: ${WP_DB_PASSWORD}
        volumes:
          - mariadb:/var/lib/mysql
        networks:
