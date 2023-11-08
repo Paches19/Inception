@@ -17,8 +17,8 @@ RUN apt-get update && apt-get install -y \
 	php-mbstring \
 	&& rm -rf /var/lib/apt/lists/*
 
-#Copy the necessary tools to download wordpress
-
+# Crear la carpeta /var/www/html y copiar los archivos necesarios para descargar WordPress
+RUN mkdir -p /var/www/html/
 COPY ./conf/www.conf /var/www/html/
 
 # Configurar php-fpm
