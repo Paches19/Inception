@@ -22,7 +22,7 @@ else
 	cd /var/www/html/wordpress
 	sed -i "s/username_here/$WP_DB_USER/g" wp-config-sample.php
 	sed -i "s/password_here/$WP_DB_PASSWORD/g" wp-config-sample.php
-	sed -i "s/localhost/$WP_HOST_NAME/g" wp-config-sample.php
+	sed -i "s/localhost/$MYSQL_HOST/g" wp-config-sample.php
 	sed -i "s/database_name_here/$WP_DB_NAME/g" wp-config-sample.php
 	mv wp-config-sample.php wp-config.php
 
