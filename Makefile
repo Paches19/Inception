@@ -6,29 +6,37 @@
 #    By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/31 13:09:36 by adpachec          #+#    #+#              #
-#    Updated: 2023/11/10 11:40:53 by adpachec         ###   ########.fr        #
+#    Updated: 2023/11/10 12:08:30 by adpachec         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 COMPOSE_FILE=./srcs/docker-compose.yml
+DATA_DIR=/home/adpachec/data
+
+# Directorios de datos para WordPress y MariaDB
+WP_DATA_DIR=$(DATA_DIR)/wordpress
+MDB_DATA_DIR=$(DATA_DIR)/mariadb
+
+.PHONY: all build run up down stop restart clean ps logs
 
 all: run
 
 # Construir todos los contenedores
 build:
-	@sudo mkdir -p /home/adpachec/data/wordpress
-	@sudo mkdir -p /home/adpachec/data/mariadb
+	@sudo mkdir -p $(WP_DATA_DIR)
+	@sudo mkdir -p $(MDB_DATA_DIR)
 	docker-compose -f $(COMPOSE_FILE) build --no-cache
 
+# Iniciar todos los contenedores
 run: 
-	@sudo mkdir -p /home/adpachec/data/wordpress
-	@sudo mkdir -p /home/adpachec/data/mariadb
+	@sudo mkdir -p $(WP_DATA_DIR)
+	@sudo mkdir -p $(MDB_DATA_DIR)
 	docker-compose -f $(COMPOSE_FILE) up --build
-	
+
 # Iniciar todos los contenedores en segundo plano
 up:
-	@sudo mkdir -p /home/adpachec/data/wordpress
-	@sudo mkdir -p /home/adpachec/data/mariadb
+	@sudo mkdir -p $(WP_DATA_DIR)
+	@sudo mkdir -p $(MDB_DATA_DIR)
 	docker-compose -f $(COMPOSE_FILE) up -d --build
 
 # Detener y eliminar todos los contenedores, redes y volúmenes
@@ -37,11 +45,11 @@ down:
 
 # Detener todos los contenedores sin eliminarlos
 stop:
-	docker-compose -f  $(COMPOSE_FILE) stop
+	docker-compose -f $(COMPOSE_FILE) stop
 
-# Restart the Docker Compose services
+# Reiniciar los servicios de Docker Compose
 restart:
-	docker compose -f $(COMPOSE_FILE) restart
+	docker-compose -f $(COMPOSE_FILE) restart
 
 # Listar todos los contenedores en ejecución
 ps:
@@ -51,16 +59,9 @@ ps:
 logs:
 	docker-compose -f $(COMPOSE_FILE) logs
 
-# Destroy the Docker Compose services
-destroy:
-	docker compose -f $(COMPOSE_FILE) down --rmi all
-
-# Clean up Docker
+# Limpiar Docker
 clean:
-	@sudo rm -rf /home/adpachec/data/wordpress \
-	@sudo rm -rf /home/adpachec/data/mariadb \
-	docker compose -f $(COMPOSE_FILE) down --rmi all \
-	docker volume rm mariadb wordpress \
-	docker system prune -p \
-
-.PHONY: all up down build start destroy stop restart clean ps logs
+	@sudo rm -rf $(WP_DATA_DIR)
+	@sudo rm -rf $(MDB_DATA_DIR)
+	docker-compose -f $(COMPOSE_FILE) down --volumes --remove-orphans
+	docker system prune -a -f
