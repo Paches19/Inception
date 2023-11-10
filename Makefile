@@ -6,7 +6,7 @@
 #    By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/31 13:09:36 by adpachec          #+#    #+#              #
-#    Updated: 2023/11/06 13:08:30 by adpachec         ###   ########.fr        #
+#    Updated: 2023/11/10 11:40:53 by adpachec         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -57,10 +57,10 @@ destroy:
 
 # Clean up Docker
 clean:
-	docker compose -f $(COMPOSE_FILE) down --rmi all
-	docker volume rm mariadb wordpress
-	docker system prune -p
-	@sudo rm -rf /home/adpachec/data/wordpress
-	@sudo rm -rf /home/adpachec/data/mariadb
+	@sudo rm -rf /home/adpachec/data/wordpress \
+	@sudo rm -rf /home/adpachec/data/mariadb \
+	docker compose -f $(COMPOSE_FILE) down --rmi all \
+	docker volume rm mariadb wordpress \
+	docker system prune -p \
 
 .PHONY: all up down build start destroy stop restart clean ps logs
