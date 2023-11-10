@@ -6,7 +6,7 @@
 #    By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/31 13:09:36 by adpachec          #+#    #+#              #
-#    Updated: 2023/11/10 12:08:30 by adpachec         ###   ########.fr        #
+#    Updated: 2023/11/10 13:36:06 by adpachec         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,8 +16,6 @@ DATA_DIR=/home/adpachec/data
 # Directorios de datos para WordPress y MariaDB
 WP_DATA_DIR=$(DATA_DIR)/wordpress
 MDB_DATA_DIR=$(DATA_DIR)/mariadb
-
-.PHONY: all build run up down stop restart clean ps logs
 
 all: run
 
@@ -65,3 +63,5 @@ clean:
 	@sudo rm -rf $(MDB_DATA_DIR)
 	docker-compose -f $(COMPOSE_FILE) down --volumes --remove-orphans
 	docker system prune -a -f
+	
+.PHONY: all build run up down stop restart clean ps logs

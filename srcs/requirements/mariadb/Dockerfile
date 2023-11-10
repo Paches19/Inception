@@ -18,4 +18,4 @@ EXPOSE 3306
 ENTRYPOINT ["/usr/local/bin/init_db.sh"]
 
 # Comando por defecto para ejecutar MariaDB
-CMD ["mysqld"]
+CMD ["mysqld_safe"]
