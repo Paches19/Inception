@@ -1,29 +1,23 @@
-# Imagen base
 FROM debian:buster
 
-# Instalar NGINX y las herramientas necesarias
-RUN apt-get update && apt-get install -y \
-    nginx \
-    openssl \
-    && rm -rf /var/lib/apt/lists/*
+# Instalar NGINX
+RUN apt-get update && apt-get install -y nginx openssl
 
-# Crear carpeta base del contenedor
-RUN mkdir -p /var/www/html/
+# Limpiar cache de apt
+RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Crear carpeta para certificados SSL
-RUN mkdir -p /etc/nginx/ssl/
-
-# Generar y copiar certificados SSL
+# Configurar SSL
+RUN mkdir /etc/nginx/ssl
 RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
-    -out /etc/nginx/ssl/adpachec.42.fr.pem \
-    -keyout /etc/nginx/ssl/adpachec.42.fr.key \
-    -subj "/C=ES/ST=Madrid/L=Madrid/O=42/CN=adpachec.42.fr"
+    -keyout /etc/nginx/ssl/adpachec.key -out /etc/nginx/ssl/adpachec.crt \
+    -subj "/C=ES/ST=madrid/L=Madrid/O=42/CN=${DOMAIN_NAME}"
 
-# Copiar la configuración personalizada de NGINX
-COPY ./conf/nginx.conf /etc/nginx/nginx.conf.d
+# Copiar archivos de configuración
+COPY conf/nginx.conf /etc/nginx/nginx.conf
+COPY conf/default.conf /etc/nginx/sites-available/default
 
-# Exponer el puerto 443 para el tráfico SSL
+# Exponer puerto 443 para HTTPS
 EXPOSE 443
 
-# Comando para iniciar NGINX en modo foreground
+# Iniciar NGINX
 CMD ["nginx", "-g", "daemon off;"]

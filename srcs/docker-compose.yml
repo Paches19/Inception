@@ -1,60 +1,84 @@
 version: '3.5'
 
 volumes:
-    wordpress:
-       driver: local
-       driver_opts:
-         type: none
-         o: bind
-         device: /home/adpachec/data/wordpress
+  wordpress:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/adpachec/data/wordpress
 
-    mariadb:
-       driver: local
-       driver_opts:
-         type: none
-         o: bind
-         device: /home/adpachec/data/mariadb
+  mariadb:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/adpachec/data/mariadb
 
 networks:
   inception:
     driver: bridge
 
 services:
-    mariadb:
-       container_name: mariadb
-       build: ./requirements/mariadb
-       env_file:
-         - .env
-       volumes:
-         - mariadb:/var/lib/mysql
-       networks:
-         - inception
-       restart: always
+  mariadb:
+    container_name: mariadb
+    build: ./requirements/mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_HOST: ${MYSQL_HOST}
+      WP_DB_NAME: ${WP_DB_NAME}
+      WP_DB_USER: ${MYSQL_USER}
+      WP_DB_PASSWORD: ${MYSQL_PASSWORD}
+      WP_URL: ${WP_URL}
+      WP_TITLE: ${WP_TITLE}
+      WP_ADMIN_EMAIL: ${WP_ADMIN_EMAIL}
+      WP_USER_EMAIL: ${WP_USER_EMAIL}
+    volumes:
+      - mariadb:/var/lib/mysql
+    networks:
+      - inception
+    restart: always
 
-    wordpress:
-       container_name: wordpress
-       build: ./requirements/wordpress
-       depends_on:
-         - mariadb
-       env_file:
-         - .env
-       volumes:
-         - wordpress:/var/www/html
-       networks:
-         - inception
-       restart: always
+  wordpress:
+    container_name: wordpress
+    build: ./requirements/wordpress
+    depends_on:
+      - mariadb
+    environment:
+      MYSQL_HOST: ${MYSQL_HOST}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      WP_DB_NAME: ${WP_DB_NAME}
+      WP_DB_USER: ${MYSQL_USER}
+      WP_DB_PASSWORD: ${MYSQL_PASSWORD}
+      WP_URL: ${WP_URL}
+      WP_TITLE: ${WP_TITLE}
+      WP_ADMIN_EMAIL: ${WP_ADMIN_EMAIL}
+      WP_USER_EMAIL: ${WP_USER_EMAIL}
+    volumes:
+      - wordpress:/var/www/html
+    networks:
+      - inception
+    restart: always
 
-    nginx:
-       container_name: nginx
-       build: ./requirements/nginx
-       depends_on:
-         - wordpress
-       volumes:
-         - wordpress:/var/www/html
-       ports:
-         - "443:443"
-       networks:
-         - inception
-       restart: always
-
-
+  nginx:
+    container_name: nginx
+    build: ./requirements/nginx
+    depends_on:
+      - wordpress
+    environment:
+      DOMAIN_NAME: ${DOMAIN_NAME}
+      SSL_CERT_PATH: ${SSL_CERT_PATH}
+      SSL_KEY_PATH: ${SSL_KEY_PATH}
+    volumes:
+      - wordpress:/var/www/html
+    ports:
+      - "443:443"
+    networks:
+      - inception
+    restart: always
