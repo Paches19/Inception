@@ -1,16 +1,12 @@
-#!/bin/sh
+#!/bin/bash
 
-# Iniciar el servicio de MariaDB
-service mysql start
+# Esperar a que MariaDB esté completamente lista
+# (ajusta el tiempo de espera según sea necesario)
+sleep 10
 
-# Ejecutar el script SQL inicial
-mysql < /usr/local/bin/init_db.sql
-
-# Limpiar después de la ejecución
-rm -f /usr/local/bin/init_db.sql
-
-# Detener el servicio para que CMD pueda tomar el control
-service mysql stop
-
-# Ejecutar el comando pasado al contenedor (en este caso, mysqld)
-exec "$@"
+# Ejecutar comandos SQL usando variables de entorno
+mysql -u root -e "CREATE DATABASE IF NOT EXISTS ${WP_DB_NAME};"
+mysql -u root -e "CREATE USER IF NOT EXISTS '${WP_DB_USER}'@'%' IDENTIFIED BY '${WP_DB_PASSWORD}';"
+mysql -u root -e "GRANT ALL PRIVILEGES ON ${WP_DB_NAME}.* TO '${WP_DB_USER}'@'%';"
+mysql -u root -e "FLUSH PRIVILEGES;"
+mysql -u root -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}';"

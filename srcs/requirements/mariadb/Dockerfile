@@ -9,13 +9,9 @@ EXPOSE 3306
 # Copiar configuraciones y scripts
 COPY ./conf/50-server.cnf /etc/mysql/mariadb.conf.d/
 COPY ./tools/init_db.sh /usr/local/bin/
-COPY ./tools/init_db.sql /usr/local/bin/
 
 # Dar permiso de ejecución al script
 RUN chmod +x /usr/local/bin/init_db.sh
-
-# Ejecutar el script inicial al iniciar el contenedor
-ENTRYPOINT ["sh", "/usr/local/bin/init_db.sh"]
 
 # Comando por defecto para ejecutar MariaDB
 CMD ["mysqld"]
