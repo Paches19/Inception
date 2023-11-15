@@ -29,6 +29,6 @@ RUN chmod +x /usr/local/bin/wordpress.sql
 
 ENTRYPOINT [ "/usr/local/bin/mariadb.sh" ]
 
-#Command to launch mariadb and enable the database to listen globally - also can be put on mysqldump.cnf file
-CMD ["mysqld", "--bind-address=0.0.0.0"]
+#Command to launch mariadb and enable the database to listen globally
+CMD ["mysqld_safe", "--bind-address=0.0.0.0"]
 
