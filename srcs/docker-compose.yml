@@ -43,7 +43,7 @@ volumes:
     driver: local
     driver_opts:
       type: none
-      device: /home/adpachec/data/mysql
+      device: /home/adpachec/data/mariadb
       o: bind
   wordpressVol:
     driver: local
