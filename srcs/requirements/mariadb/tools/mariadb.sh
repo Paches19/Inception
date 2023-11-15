@@ -17,8 +17,8 @@ else
 mysql_secure_installation << _EOF_
 
 Y
-Incepion1234
-Incepion1234
+Inception1234
+Inception1234
 Y
 n
 Y

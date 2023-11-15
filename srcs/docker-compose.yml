@@ -1,39 +1,22 @@
-version: '3.5'
-
-volumes:
-  wordpress:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: /home/adpachec/data/wordpress
-
-  mariadb:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: /home/adpachec/data/mariadb
+version: '3'
 
 services:
   nginx:
     container_name: nginx
     build: ./requirements/nginx
-    depends_on:
-      - wordpress
     ports:
-      - "443:443"
+      - 443:443
     volumes:
-      - wordpress:/var/www/html
+      - wordpressVol:/var/www/html
+    restart: always
     networks:
       - inception
-    restart: always
 
   mariadb:
     container_name: mariadb
     build: ./requirements/mariadb
     volumes:
-      - mariadb:/var/lib/mysql
+      - mariadbVol:/var/lib/mysql
     networks:
       - inception
     restart: always
@@ -42,17 +25,33 @@ services:
 
   wordpress:
     container_name: wordpress
-    build: 
-      context: ./requirements/wordpress
-      dockerfile: Dockerfile
     depends_on:
       - mariadb
+    build:
+      context: ./requirements/wordpress
+      dockerfile: Dockerfile
+    restart: always
+    env_file:
+      - .env
     volumes:
-      - wordpress:/var/www/html
+      - wordpressVol:/var/www/html
     networks:
       - inception
-    restart: always
+
+volumes:
+  mariadbVol:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/adpachec/data/mysql
+      o: bind
+  wordpressVol:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/adpachec/data/wordpress
+      o: bind
 
 networks:
-  inception:
+  network: inception
     driver: bridge

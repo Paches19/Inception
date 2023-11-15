@@ -15,7 +15,7 @@ RUN apt-get update && apt-get -y install \
 	php-redis \
 	&& rm -rf /var/lib/apt/lists/*
 
-# Install wp_cli command and put it in the right directory /usr/local/bin
+# I need to install wp_cli command and put it in the right directory /usr/local/bin
 RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
   && chmod +x wp-cli.phar \
   && mv wp-cli.phar /usr/local/bin/wp
@@ -26,10 +26,10 @@ COPY ./conf/www.conf /etc/php/7.3/fpm/pool.d/
 #Create the folder to enable php start
 RUN mkdir /run/php
 
-#Copy the script and give rights to launch it
-COPY ./tools/wordpress_start.sh /usr/local/bin/
-RUN chmod +x /usr/local/bin/wordpress_start.sh
-ENTRYPOINT ["/usr/local/bin/wordpress_start.sh"]
+#we copy the script, give the right to launch it in local on our computer
+COPY ./tools/create_wordpress.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/create_wordpress.sh
+ENTRYPOINT ["/usr/local/bin/create_wordpress.sh"]
 
 #We go the html directory
 WORKDIR /var/www/html/
@@ -39,3 +39,4 @@ EXPOSE 9000
 
 #Launch PHP FPM in foreground and ignore deamonize from conf file (-F)
 CMD ["/usr/sbin/php-fpm7.3", "-F"]
+
