@@ -1,23 +1,24 @@
-FROM debian:buster
+FROM	debian:buster
 
-# Instalar NGINX
-RUN apt-get update && apt-get install -y nginx openssl
+#install all the program
+RUN		apt-get update
+RUN		apt-get install -y nginx \
+                openssl
 
-# Limpiar cache de apt
-RUN apt-get clean && rm -rf /var/lib/apt/lists/*
-
-# Configurar SSL
+# Configure SSL and create certificates
 RUN mkdir /etc/nginx/ssl
-RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
-    -keyout /etc/nginx/ssl/adpachec.key -out /etc/nginx/ssl/adpachec.crt \
-    -subj "/C=ES/ST=madrid/L=Madrid/O=42/CN=${DOMAIN_NAME}"
+RUN openssl req -newkey rsa:4096 -x509 -sha256 -days 365 -nodes \
+    -out /etc/nginx/ssl/adpachec.crt \
+    -keyout /etc/nginx/ssl/adpachec.key \
+    -subj "/C=ES/ST=Madrid/L=Madrid/O=42 Campus/OU=adpachec/CN=adpachec/"
 
-# Copiar archivos de configuración
-COPY conf/nginx.conf /etc/nginx/nginx.conf
-COPY conf/default.conf /etc/nginx/sites-available/default
+COPY ./conf/nginx.conf /etc/nginx/conf.d
 
-# Exponer puerto 443 para HTTPS
-EXPOSE 443
+# Init nginx config 
+RUN mkdir -p /run/nginx
 
-# Iniciar NGINX
+#Expose the only allow port
+EXPOSE	443
+
+# Start nginx daemon off (in foreground)
 CMD ["nginx", "-g", "daemon off;"]

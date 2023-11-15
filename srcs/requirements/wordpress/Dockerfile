@@ -1,26 +1,41 @@
 FROM debian:buster
 
-# Instalar PHP y extensiones necesarias
-RUN apt-get update && \
-    apt-get install -y php7.3 php7.3-fpm php7.3-mysqli wget && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get -y install \
+	wget \
+	curl \
+	bash \
+	php \
+	php-cgi \
+	php-mysql \
+	php-fpm \
+	php-pdo \
+	php-gd php-cli \
+	php-mbstring \
+	redis \
+	php-redis \
+	&& rm -rf /var/lib/apt/lists/*
 
-# Configurar PHP-FPM para escuchar en el puerto 9000
+# Install wp_cli command and put it in the right directory /usr/local/bin
+RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
+  && chmod +x wp-cli.phar \
+  && mv wp-cli.phar /usr/local/bin/wp
+
+# Copy the .conf in the html directory
 COPY ./conf/www.conf /etc/php/7.3/fpm/pool.d/
-COPY ./tools/wp-config.php /var/www/html/
 
-# Exponer el puerto 9000
+#Create the folder to enable php start
+RUN mkdir /run/php
+
+#Copy the script and give rights to launch it
+COPY ./tools/wordpress_start.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/wordpress_start.sh
+ENTRYPOINT ["/usr/local/bin/wordpress_start.sh"]
+
+#We go the html directory
+WORKDIR /var/www/html/
+
+#We expose the 9000 port
 EXPOSE 9000
 
-# Copiar el script de inicio
-COPY ./tools/wordpress_start.sh /var/www/
-
-# Dar permiso de ejecución al script
-RUN chmod +x /var/www/wordpress_start.sh
-
-# Establecer el directorio de trabajo
-WORKDIR /var/www/html
-
-# Comando para iniciar PHP-FPM y el script
-CMD ["/var/www/wordpress_start.sh"]
+#Launch PHP FPM in foreground and ignore deamonize from conf file (-F)
+CMD ["/usr/sbin/php-fpm7.3", "-F"]
