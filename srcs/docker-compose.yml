@@ -53,5 +53,5 @@ volumes:
       o: bind
 
 networks:
-  network: inception
+  inception:
     driver: bridge
