@@ -16,7 +16,9 @@ EXPOSE 3306
 
 #Copy and give rights to execute and launch scripts
 COPY ./tools/init_db.sh /usr/local/bin/
+COPY ./conf/wordpress.sql /usr/local/bin/
 RUN chmod +x /usr/local/bin/init_db.sh
+RUN chmod +x /usr/local/bin/wordpress.sql
 
 ENTRYPOINT [ "/usr/local/bin/init_db.sh" ]
 
