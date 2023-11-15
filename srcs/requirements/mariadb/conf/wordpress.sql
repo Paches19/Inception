@@ -1,6 +1,6 @@
 -- MySQL dump 10.19  Distrib 10.3.36-MariaDB, for debian-linux-gnu (aarch64)
 --
--- Host: adpachec.42.fr    Database: wordpress
+-- Host: localhost    Database: wordpress
 -- ------------------------------------------------------
 -- Server version       10.3.36-MariaDB-0+deb10u1
 
@@ -394,7 +394,7 @@ CREATE TABLE `wp_users` (
 
 LOCK TABLES `wp_users` WRITE;
 /*!40000 ALTER TABLE `wp_users` DISABLE KEYS */;
-INSERT INTO `wp_users` VALUES (1,'adpachec','$P$BFwyV/GXu8rhctqT40E4ozlZ9vAoQg/','adpachec','vcbachelet@gmail.com','https://adpachec.42.fr','2022-09-28 15:59:52','',0,'adpachec');
+INSERT INTO `wp_users` VALUES (1,'vbachele','$P$BFwyV/GXu8rhctqT40E4ozlZ9vAoQg/','vbachele','vcbachelet@gmail.com','https://vbachele.42.fr','2022-09-28 15:59:52','',0,'vbachele');
 /*!40000 ALTER TABLE `wp_users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
