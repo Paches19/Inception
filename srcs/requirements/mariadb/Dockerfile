@@ -9,6 +9,9 @@ RUN apt-get install -y mariadb-server \
 #Allow to run the daemon of mysql
 # Purge and re-create /var/lib/mysql with appropriate ownership
 # ensure that /var/run/mysqld (used for socket and lock files) is writable regardless of the UID our mysqld instance ends up having at runtime
+RUN chown -R mysql: /var/lib/mysql \
+&& chmod 777 /var/lib/mysql
+
 RUN mkdir -p /var/run/mysqld \
 && chown -R mysql:mysql /var/run/mysqld \
 && chmod 777 /var/run/mysqld
