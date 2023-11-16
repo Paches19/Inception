@@ -6,7 +6,7 @@
 #    By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/31 13:09:36 by adpachec          #+#    #+#              #
-#    Updated: 2023/11/16 11:19:56 by adpachec         ###   ########.fr        #
+#    Updated: 2023/11/16 11:22:35 by adpachec         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,7 @@ build:
 	@sudo mkdir -p $(MDB_DATA_DIR)
 	docker-compose -f $(COMPOSE_FILE) build --no-cache
 
-# Iniciar todos los contenedores
+# Iniciar todos los contenedores en segundo plano
 up:
 	@sudo mkdir -p $(WP_DATA_DIR)
 	@sudo mkdir -p $(MDB_DATA_DIR)
