@@ -6,7 +6,7 @@
 #    By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/31 13:09:36 by adpachec          #+#    #+#              #
-#    Updated: 2023/11/10 13:36:06 by adpachec         ###   ########.fr        #
+#    Updated: 2023/11/16 11:19:56 by adpachec         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ DATA_DIR=/home/adpachec/data
 WP_DATA_DIR=$(DATA_DIR)/wordpress
 MDB_DATA_DIR=$(DATA_DIR)/mariadb
 
-all: run
+all: up
 
 # Construir todos los contenedores
 build:
@@ -26,12 +26,6 @@ build:
 	docker-compose -f $(COMPOSE_FILE) build --no-cache
 
 # Iniciar todos los contenedores
-run: 
-	@sudo mkdir -p $(WP_DATA_DIR)
-	@sudo mkdir -p $(MDB_DATA_DIR)
-	docker-compose -f $(COMPOSE_FILE) up --build
-
-# Iniciar todos los contenedores en segundo plano
 up:
 	@sudo mkdir -p $(WP_DATA_DIR)
 	@sudo mkdir -p $(MDB_DATA_DIR)
