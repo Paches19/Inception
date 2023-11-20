@@ -1,37 +1,45 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Dockerfile                                         :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2023/05/13 12:45:42 by oboutarf          #+#    #+#              #
+#    Updated: 2023/11/20 11:09:44 by adpachec         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 FROM debian:buster
 
-RUN apt-get update && apt-get -y install \
-	wget \
-	curl \
-	bash \
-	php \
-	php-cgi \
-	php-mysql \
-	php-fpm \
-	php-pdo \
-	php-gd php-cli \
-	php-mbstring \
-	redis \
-	php-redis \
-	&& rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y curl \
+    php7.3 \
+    php7.3-fpm \
+    php7.3-mysql \
+    php7.3-common \
+    mariadb-client \
+    sendmail \
+    wget
 
-# Istall wordpress client
-RUN wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
-RUN chmod +x wp-cli.phar
-RUN cp wp-cli.phar /usr/bin/wp
+RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
+        && chmod +x wp-cli.phar \
+        && mv wp-cli.phar /usr/local/bin/wp
 
-# Copy the .conf in the html directory
-RUN	adduser -S nginx &&	addgroup -S nginx
-COPY conf/php-fpm.conf /etc/php7/php-fpm.conf
-COPY ./conf/www.conf /etc/php/7.3/fpm/pool.d/
+RUN mkdir -p /var/www/html \
+        && chown -R www-data:www-data /var/www/html
 
-#Create the folder to enable php start
-RUN mkdir /run/php
+RUN chmod -R 755 /var/www/html
 
-#We go the html directory
-WORKDIR /var/www/html/
+COPY conf/www.conf /etc/php/7.3/fpm/pool.d/www.conf
 
-#we copy the script, give the right to launch it in local on our computer
-COPY ./tools/create_wordpress.sh /usr/local/bin/
-RUN chmod +x /usr/local/bin/create_wordpress.sh
-ENTRYPOINT ["/usr/local/bin/create_wordpress.sh"]
+COPY tools/init-wordpress.sh /var/www/init-wordpress.sh
+
+RUN chmod +x /var/www/init-wordpress.sh
+
+RUN mkdir -p /run/php
+
+WORKDIR /var/www/html
+
+EXPOSE 9000
+
+CMD ["/var/www/init-wordpress.sh"]

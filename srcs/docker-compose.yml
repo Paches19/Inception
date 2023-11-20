@@ -1,57 +1,52 @@
-version: '3'
-
+version:  '3.8'
 services:
-  nginx:
-    container_name: nginx
-    build: ./requirements/nginx
-    ports:
-      - 443:443
-    volumes:
-      - wordpressVol:/var/www/html
-    restart: always
-    networks:
-      - inception
-
-  mariadb:
-    container_name: mariadb
-    build: ./requirements/mariadb
-    volumes:
-      - mariadbVol:/var/lib/mysql
-    networks:
-      - inception
-    restart: always
-    env_file:
-      - .env
-
-  wordpress:
-    container_name: wordpress
-    depends_on:
-      - mariadb
-    build:
-      context: ./requirements/wordpress
-      dockerfile: Dockerfile
-    restart: always
-    env_file:
-      - .env
-    volumes:
-      - wordpressVol:/var/www/html
-    networks:
-      - inception
-
+    nginx:
+      depends_on:
+        - wordpress
+      container_name: nginx
+      build: ./requirements/nginx
+      volumes:
+        - "wordpress-vol:/var/www/html"
+      ports:
+        - "443:443"
+      networks:
+        - inception
+      restart: always
+    wordpress:
+      depends_on:
+        - mariadb
+      container_name: wordpress
+      build: ./requirements/wordpress
+      env_file:
+        - .env
+      networks:
+        - inception
+      volumes:
+        - "wordpress-vol:/var/www/html"
+      restart: always
+    mariadb:
+          container_name: mariadb
+          env_file:
+            - .env
+          build: ./requirements/mariadb
+          networks:
+            - inception
+          volumes:
+            - "mariadb-vol:/var/lib/mysql"
+          restart: always
 volumes:
-  mariadbVol:
+  mariadb-vol:
     driver: local
     driver_opts:
       type: none
       device: /home/adpachec/data/mariadb
       o: bind
-  wordpressVol:
+  wordpress-vol:
     driver: local
     driver_opts:
       type: none
       device: /home/adpachec/data/wordpress
       o: bind
-
 networks:
   inception:
     driver: bridge

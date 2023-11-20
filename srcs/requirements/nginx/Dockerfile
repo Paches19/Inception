@@ -1,24 +1,29 @@
-FROM	debian:buster
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Dockerfile                                         :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2023/05/04 18:12:26 by oscobou           #+#    #+#              #
+#    Updated: 2023/11/20 11:08:47 by adpachec         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
 
-#install all the program
-RUN		apt-get update
-RUN		apt-get install -y nginx \
-                openssl
+FROM debian:buster
 
-# nginx SSL
-RUN mkdir /etc/nginx/ssl
-RUN openssl req -newkey rsa:4096 -x509 -sha256 -days 365 -nodes \
-       -out /etc/nginx/ssl/adpachec.crt \
-       -keyout /etc/nginx/ssl/adpachec.key \
-       -subj "/C=FR/ST=Paris/L=Paris/O=42 School/OU=adpachec/CN=adpachec/"
+RUN		apt-get update && apt-get install -y nginx \
+    openssl
 
-COPY ./conf/nginx.conf /etc/nginx/conf.d
+COPY    conf/nginx.conf /etc/nginx/conf.d/default.conf
 
-# nginx config
+RUN     openssl req -newkey rsa:4096 -x509 -sha256 -days 365 -nodes \
+    -out /etc/ssl/adpachec.42.fr.pem  \
+    -keyout /etc/ssl/adpachec.42.fr.key \
+    -subj "/C=FR/ST=Paris/L=Paris/O=42 School/OU=adpachec/CN=adpachec.42.fr"
+
 RUN mkdir -p /run/nginx
 
-#the only port allowed
-EXPOSE	443
+EXPOSE  443
 
-# Start nginx
-CMD ["nginx", "-g", "daemon off;"]
+CMD     ["nginx", "-g", "daemon off;"]
