@@ -6,14 +6,13 @@
 #    By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/04 18:12:26 by oscobou           #+#    #+#              #
-#    Updated: 2023/12/13 13:44:37 by adpachec         ###   ########.fr        #
+#    Updated: 2023/12/13 13:52:14 by adpachec         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 FROM debian:bullseye
 
-RUN		apt-get update && apt-get install -y nginx \
-    openssl
+RUN		apt-get update && apt-get install -y nginx openssl
 
 COPY    conf/nginx.conf /etc/nginx/conf.d/default.conf
 

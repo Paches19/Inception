@@ -6,20 +6,13 @@
 #    By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/13 12:45:42 by oboutarf          #+#    #+#              #
-#    Updated: 2023/12/13 13:44:43 by adpachec         ###   ########.fr        #
+#    Updated: 2023/12/13 13:51:16 by adpachec         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 FROM debian:bullseye
 
-RUN apt-get update && apt-get install -y curl \
-    php7.3 \
-    php7.3-fpm \
-    php7.3-mysql \
-    php7.3-common \
-    mariadb-client \
-    sendmail \
-    wget
+RUN apt-get update && apt-get install -y php7.4-fpm php7.4-mysql curl sendmail
 
 COPY conf/www.conf /etc/php/7.3/fpm/pool.d/www.conf
  
