@@ -6,11 +6,11 @@
 #    By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/13 12:45:42 by oboutarf          #+#    #+#              #
-#    Updated: 2023/12/13 13:23:44 by adpachec         ###   ########.fr        #
+#    Updated: 2023/12/13 13:44:43 by adpachec         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-FROM debian:buster
+FROM debian:bullseye
 
 RUN apt-get update && apt-get install -y curl \
     php7.3 \
