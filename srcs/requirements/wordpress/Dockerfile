@@ -6,13 +6,20 @@
 #    By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/13 12:45:42 by oboutarf          #+#    #+#              #
-#    Updated: 2023/12/13 12:55:15 by adpachec         ###   ########.fr        #
+#    Updated: 2023/12/13 12:59:32 by adpachec         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 FROM debian:buster
 
-RUN apt-get update && apt-get install -y php7.4-fpm php7.4-mysql curl sendmail
+RUN apt-get update && apt-get install -y curl \
+    php7.3 \
+    php7.3-fpm \
+    php7.3-mysql \
+    php7.3-common \
+    mariadb-client \
+    sendmail \
+    wget
 
 EXPOSE 9000
 
