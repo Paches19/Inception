@@ -6,17 +6,17 @@
 #    By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/13 12:45:42 by oboutarf          #+#    #+#              #
-#    Updated: 2023/11/20 11:09:44 by adpachec         ###   ########.fr        #
+#    Updated: 2023/12/13 20:57:42 by adpachec         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-FROM debian:buster
+FROM debian:bullseye
 
 RUN apt-get update && apt-get install -y curl \
-    php7.3 \
-    php7.3-fpm \
-    php7.3-mysql \
-    php7.3-common \
+    php7.4 \
+    php7.4-fpm \
+    php7.4-mysql \
+    php7.4-common \
     mariadb-client \
     sendmail \
     wget
@@ -30,7 +30,7 @@ RUN mkdir -p /var/www/html \
 
 RUN chmod -R 755 /var/www/html
 
-COPY conf/www.conf /etc/php/7.3/fpm/pool.d/www.conf
+COPY conf/www.conf /etc/php/7.4/fpm/pool.d/www.conf
 
 COPY tools/init-wordpress.sh /var/www/init-wordpress.sh
 

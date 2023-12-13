@@ -13,4 +13,4 @@ else
     wp option update moderation_notify 0 --allow-root;
 fi
 
-/usr/sbin/php-fpm7.3 -F -R
+/usr/sbin/php-fpm7.4 -F -R

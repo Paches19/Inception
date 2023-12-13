@@ -1,4 +1,16 @@
-FROM debian:buster
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Dockerfile                                         :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2023/12/13 20:58:23 by adpachec          #+#    #+#              #
+#    Updated: 2023/12/13 20:58:28 by adpachec         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
+FROM debian:bullseye
 
 RUN apt-get update \
     && apt-get install -y mariadb-server \

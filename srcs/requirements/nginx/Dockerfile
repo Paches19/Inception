@@ -6,11 +6,11 @@
 #    By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/04 18:12:26 by oscobou           #+#    #+#              #
-#    Updated: 2023/11/20 11:08:47 by adpachec         ###   ########.fr        #
+#    Updated: 2023/12/13 20:58:08 by adpachec         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-FROM debian:buster
+FROM debian:bullseye
 
 RUN		apt-get update && apt-get install -y nginx \
     openssl
