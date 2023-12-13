@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if [! -f /var/www/html/wp-config.php ]; then
+
 
 	cd /var/www/html;
 
@@ -12,8 +12,8 @@ if [! -f /var/www/html/wp-config.php ]; then
 	wp option update comment_previously_approved 0 --allow-root;
 	wp option update comments_notify 0 --allow-root;
 	wp option update moderation_notify 0 --allow-root;
-else
+
 	echo "Wordpress already installed, skipping download and configuration."
-fi
+
 
 /usr/sbin/php-fpm7.4 --nodaemonize
