@@ -17,6 +17,8 @@ RUN apt-get update \
     mariadb-client
 
 COPY ./conf/50-server.cnf /etc/mysql/mariadb.conf.d/
+RUN chmod 644 /etc/mysql/mariadb.conf.d/50-server.cnf
+
 COPY ./tools/init-mariadb.sh /
 RUN chmod +x init-mariadb.sh
 
