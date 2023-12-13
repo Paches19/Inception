@@ -6,14 +6,13 @@
 #    By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/13 12:45:42 by oboutarf          #+#    #+#              #
-#    Updated: 2023/12/13 17:19:25 by adpachec         ###   ########.fr        #
+#    Updated: 2023/12/13 18:06:44 by adpachec         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 FROM debian:bullseye
 
-RUN apt-get update && apt-get install -y php7.4-fpm php7.4-mysql  curl sendmail \
-	mariadb-client wget
+RUN apt-get update && apt-get install -y php7.4-fpm php7.4-mysql curl sendmail
  
 COPY ./tools /var/www/
 RUN chmod +x /var/www/init-wordpress.sh

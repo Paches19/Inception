@@ -4,13 +4,12 @@ sed -i "s/listen = \/run\/php\/php7.4-fpm.sock/listen = 9000/" "/etc/php/7.4/fpm
 mkdir -p /run/php/;
 touch /run/php/php7.4-fpm.pid;
 
-if [ -f  -f /var/www/html/wp-config.php ]
-then
+if [ -f /var/www/html/wp-config.php ]; then
     echo "Wordpress already installed, skipping download and configuration."
 else
-    curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
-        && chmod +x wp-cli.phar \
-        && mv wp-cli.phar /usr/local/bin/wp
+    curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar;
+    chmod +x wp-cli.phar;
+    mv wp-cli.phar /usr/local/bin/wp;
 
 	chmod -R 775 /var/www/html
 	chown -R www-data:www-data /var/www/html;
