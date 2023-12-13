@@ -21,20 +21,20 @@ else
 
 	wp core download --allow-root;
 	wp config create --allow-root \
-				--dbname=$DB_DATABASE \
+				--dbname=$MYSQL_DATABASE \
 				--dbhost=mariadb:3306 \
 				--dbprefix=wp_ \
-				--dbuser=$DB_USER \
-				--dbpass=$DB_USER_PASSWORD;
+				--dbuser=$MYSQL_USER \
+				--dbpass=$MYSQL_PASSWORD;
 
 	wp core install --allow-root \
-				--url=jutrera.42.fr \
+				--url=$DOMAIN_NAME \
 				--title=wordpress \
-				--admin_user=${WORDPRESS_ROOT_LOGIN} \
-				--admin_password=${WORDPRESS_ROOT_PASSWORD} \
-				--admin_email=${WORDPRESS_ROOT_EMAIL};
+				--admin_user=${WP_ADMIN} \
+				--admin_password=${WP_ADMIN_PASSWD} \
+				--admin_email=${WP_ADMIN_MAIL};
 
-	wp user create ${WORDPRESS_USER_LOGIN} ${WORDPRESS_USER_EMAIL} --user_pass=${WORDPRESS_USER_PASSWORD} --role=author --allow-root;
+	wp user create ${WP_USER} ${WP_USER_MAIL} --user_pass=${WP_USER_PASSWD} --role=author --allow-root;
 	wp option update comment_previously_approved 0 --allow-root;
 	wp option update comments_notify 0 --allow-root;
 	wp option update moderation_notify 0 --allow-root;
