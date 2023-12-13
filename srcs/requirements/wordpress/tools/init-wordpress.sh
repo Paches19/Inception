@@ -15,9 +15,9 @@ else
     curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar;
 	chmod +x wp-cli.phar;
 	mv wp-cli.phar /usr/local/bin/wp;
-	chmod -R 775 /var/www/html/wordpress;
-	chown -R www-data:www-data /var/www/html/wordpress;
-	cd /var/www/html/wordpress;
+	chmod -R 775 /var/www/html;
+	chown -R www-data:www-data /var/www/html;
+	cd /var/www/html;
 
 	wp core download --allow-root;
 	wp config create --allow-root \
