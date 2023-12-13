@@ -1,10 +1,9 @@
 #!/bin/sh
 
-sed -i "s/listen = \/run\/php\/php7.4-fpm.sock/listen = 9000/" "/etc/php/7.4/fpm/pool.d/www.conf";
 mkdir -p /run/php/;
 touch /run/php/php7.4-fpm.pid;
 
-if [ -f /var/www/html/wp-config.php ]; then
+if [ -f ./wp-config.php ]; then
     echo "Wordpress already installed, skipping download and configuration."
 else
     curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar;
@@ -13,7 +12,6 @@ else
 
 	chmod -R 775 /var/www/html
 	chown -R www-data:www-data /var/www/html;
-	cd /var/www/html;
 
 	wp core download --allow-root;
 	wp config create --allow-root --dbname=$MYSQL_DATABASE --dbuser=$MYSQL_USER --dbpass=$MYSQL_PASSWORD --dbhost=mariadb:3306 --allow-root;
