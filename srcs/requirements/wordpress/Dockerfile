@@ -6,7 +6,7 @@
 #    By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/13 12:45:42 by oboutarf          #+#    #+#              #
-#    Updated: 2023/12/13 12:59:32 by adpachec         ###   ########.fr        #
+#    Updated: 2023/12/13 13:23:44 by adpachec         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,12 +21,16 @@ RUN apt-get update && apt-get install -y curl \
     sendmail \
     wget
 
-EXPOSE 9000
-
 COPY conf/www.conf /etc/php/7.3/fpm/pool.d/www.conf
  
 COPY ./tools /var/www/
 RUN chmod +x /var/www/init-wordpress.sh
+
+RUN mkdir -p /run/php
+WORKDIR /var/www/html
+
+EXPOSE 9000
+
 CMD ["/var/www/init-wordpress.sh"]
 # RUN apt-get update && apt-get install -y curl \
 #     php7.3 \
