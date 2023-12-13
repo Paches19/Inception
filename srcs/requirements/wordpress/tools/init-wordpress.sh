@@ -28,8 +28,8 @@ else
 				--dbpass=$MYSQL_PASSWORD;
 
 	wp core install --allow-root \
-				--url=$DOMAIN_NAME \
-				--title=wordpress \
+				--url=https://adpachec.42.fr \
+				--title=$WP_TITLE \
 				--admin_user=${WP_ADMIN} \
 				--admin_password=${WP_ADMIN_PASSWD} \
 				--admin_email=${WP_ADMIN_MAIL};
