@@ -6,7 +6,7 @@
 #    By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/13 12:45:42 by oboutarf          #+#    #+#              #
-#    Updated: 2023/12/13 18:06:44 by adpachec         ###   ########.fr        #
+#    Updated: 2023/12/13 19:14:37 by adpachec         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,6 +16,8 @@ RUN apt-get update && apt-get install -y php7.4-fpm php7.4-mysql curl sendmail
  
 COPY ./tools /var/www/
 RUN chmod +x /var/www/init-wordpress.sh
+
+COPY conf/www.conf /etc/php/7.4/fpm/pool.d/www.conf
 
 EXPOSE 9000
 
